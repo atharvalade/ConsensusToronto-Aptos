@@ -1,0 +1,232 @@
+{
+  "projects": [
+    {
+      "id": "RF-2023-089",
+      "title": "Amazon Rainforest Conservation",
+      "location": "Brazil",
+      "coordinates": {
+        "latitude": "3.4653° S",
+        "longitude": "73.8078° W"
+      },
+      "type": "Reforestation",
+      "price": 1845,
+      "creditsAvailable": 12450,
+      "rating": 4.9,
+      "verified": true,
+      "co2TonsPerCredit": 1,
+      "category": "reforestation",
+      "description": "This project focuses on conserving and restoring the Amazon rainforest, one of Earth's most vital carbon sinks and biodiversity hotspots.",
+      "blockchain_data": {
+        "contract_address": "0x3f91a26a10229b984e9c5b8e5ec9a70f00c08402149d0ed332def1e86f7f5e29",
+        "token_id": "RF-2023-089",
+        "last_verified_block": 12457891,
+        "verification_count": 24
+      },
+      "sensor_data": {
+        "co2_absorption_rate": 4280,
+        "tree_growth_rate": 87,
+        "soil_carbon_content": 523,
+        "biomass_accumulation": 2140,
+        "humidity": 86,
+        "temperature": 28.2,
+        "rainfall": 312
+      },
+      "verification_result": {
+        "status": "Verified",
+        "carbon_credits_awarded": 4,
+        "transaction_hash": "0x9e8b1a4d5f2c38e5c7f19167d8c5b7d9d2e898432c6f37a",
+        "timestamp": "2023-06-07T15:22:03Z"
+      }
+    },
+    {
+      "id": "SE-2023-142",
+      "title": "Solar Energy Farm",
+      "location": "India",
+      "coordinates": {
+        "latitude": "26.9124° N",
+        "longitude": "75.7873° E"
+      },
+      "type": "Renewable Energy",
+      "price": 1420,
+      "creditsAvailable": 45230,
+      "rating": 4.7,
+      "verified": true,
+      "co2TonsPerCredit": 1,
+      "category": "renewable",
+      "description": "A large-scale solar farm in Rajasthan that replaces coal-fired power plants, significantly reducing carbon emissions in India's energy sector.",
+      "blockchain_data": {
+        "contract_address": "0x3f91a26a10229b984e9c5b8e5ec9a70f00c08402149d0ed332def1e86f7f5e29",
+        "token_id": "SE-2023-142",
+        "last_verified_block": 12457902,
+        "verification_count": 18
+      },
+      "sensor_data": {
+        "co2_displacement": 5840,
+        "energy_production": 2850,
+        "peak_output": 768,
+        "operational_hours": 9.2,
+        "solar_irradiance": 5.8,
+        "panel_efficiency": 21.4,
+        "temperature": 34.6
+      },
+      "verification_result": {
+        "status": "Verified",
+        "carbon_credits_awarded": 6,
+        "transaction_hash": "0x5e2a38e5d3b95a4c7f19167d8c5b7d9d2e898432c6f37a",
+        "timestamp": "2023-06-08T09:15:23Z"
+      }
+    },
+    {
+      "id": "MG-2023-076",
+      "title": "Methane Gas Capture",
+      "location": "United States",
+      "coordinates": {
+        "latitude": "39.7392° N",
+        "longitude": "104.9903° W"
+      },
+      "type": "Gas Capture",
+      "price": 1280,
+      "creditsAvailable": 9120,
+      "rating": 4.8,
+      "verified": true,
+      "co2TonsPerCredit": 1,
+      "category": "methane",
+      "description": "This project captures harmful methane emissions from landfills in Colorado, converting this potent greenhouse gas into clean energy.",
+      "blockchain_data": {
+        "contract_address": "0x3f91a26a10229b984e9c5b8e5ec9a70f00c08402149d0ed332def1e86f7f5e29",
+        "token_id": "MG-2023-076",
+        "last_verified_block": 12457920,
+        "verification_count": 16
+      },
+      "sensor_data": {
+        "methane_capture_rate": 3720,
+        "methane_concentration": 58,
+        "gas_purity": 92,
+        "energy_production": 1450,
+        "pressure": 103.5,
+        "temperature": 22.3,
+        "flow_rate": 245
+      },
+      "verification_result": {
+        "status": "Verified",
+        "carbon_credits_awarded": 5,
+        "transaction_hash": "0x1a2c38e5d3b95a4c7f19167d8c5b7d9d2e898432c6f37a",
+        "timestamp": "2023-06-05T11:38:45Z"
+      }
+    },
+    {
+      "id": "MC-2023-105",
+      "title": "Marine Conservation Blue Carbon",
+      "location": "Philippines",
+      "coordinates": {
+        "latitude": "9.7500° N",
+        "longitude": "124.5000° E"
+      },
+      "type": "Conservation",
+      "price": 1950,
+      "creditsAvailable": 7850,
+      "rating": 4.6,
+      "verified": true,
+      "co2TonsPerCredit": 1,
+      "category": "marine",
+      "description": "Protection of coastal mangrove forests in the Philippines, preserving vital blue carbon ecosystems and supporting local communities.",
+      "blockchain_data": {
+        "contract_address": "0x3f91a26a10229b984e9c5b8e5ec9a70f00c08402149d0ed332def1e86f7f5e29",
+        "token_id": "MC-2023-105",
+        "last_verified_block": 12457840,
+        "verification_count": 12
+      },
+      "sensor_data": {
+        "carbon_sequestration": 3150,
+        "mangrove_density": 8500,
+        "water_quality": 94,
+        "biodiversity_index": 82,
+        "water_temperature": 29.4,
+        "salinity": 33.2,
+        "ph_level": 8.1
+      },
+      "verification_result": {
+        "status": "Verified",
+        "carbon_credits_awarded": 3,
+        "transaction_hash": "0x8b2c38e5d3b95a4c7f19167d8c5b7d9d2e898432c6f37a",
+        "timestamp": "2023-06-03T08:24:19Z"
+      }
+    },
+    {
+      "id": "RF-2023-118",
+      "title": "Highland Reforestation Project",
+      "location": "Scotland",
+      "coordinates": {
+        "latitude": "57.4896° N",
+        "longitude": "4.2026° W"
+      },
+      "type": "Reforestation",
+      "price": 1650,
+      "creditsAvailable": 15200,
+      "rating": 4.5,
+      "verified": true,
+      "co2TonsPerCredit": 1,
+      "category": "reforestation",
+      "description": "Restoration of native Caledonian forests in the Scottish Highlands, enhancing biodiversity while creating significant carbon sinks.",
+      "blockchain_data": {
+        "contract_address": "0x3f91a26a10229b984e9c5b8e5ec9a70f00c08402149d0ed332def1e86f7f5e29",
+        "token_id": "RF-2023-118",
+        "last_verified_block": 12457830,
+        "verification_count": 14
+      },
+      "sensor_data": {
+        "co2_absorption_rate": 3840,
+        "tree_growth_rate": 41,
+        "soil_carbon_content": 487,
+        "biomass_accumulation": 1850,
+        "humidity": 72,
+        "temperature": 12.7,
+        "rainfall": 95
+      },
+      "verification_result": {
+        "status": "Verified",
+        "carbon_credits_awarded": 4,
+        "transaction_hash": "0x2d2c38e5d3b95a4c7f19167d8c5b7d9d2e898432c6f37a",
+        "timestamp": "2023-06-02T14:53:01Z"
+      }
+    },
+    {
+      "id": "WE-2023-092",
+      "title": "Wind Farm Kenya",
+      "location": "Kenya",
+      "coordinates": {
+        "latitude": "0.5236° N",
+        "longitude": "37.2610° E"
+      },
+      "type": "Renewable Energy",
+      "price": 1370,
+      "creditsAvailable": 32600,
+      "rating": 4.8,
+      "verified": true,
+      "co2TonsPerCredit": 1,
+      "category": "renewable",
+      "description": "Africa's largest wind power project, providing clean electricity to over 300,000 homes while avoiding 380,000 tons of CO₂ emissions annually.",
+      "blockchain_data": {
+        "contract_address": "0x3f91a26a10229b984e9c5b8e5ec9a70f00c08402149d0ed332def1e86f7f5e29",
+        "token_id": "WE-2023-092",
+        "last_verified_block": 12457860,
+        "verification_count": 20
+      },
+      "sensor_data": {
+        "co2_displacement": 6240,
+        "energy_production": 3240,
+        "wind_speed": 8.7,
+        "turbine_efficiency": 89,
+        "operational_hours": 19.5,
+        "temperature": 24.2,
+        "humidity": 58
+      },
+      "verification_result": {
+        "status": "Verified",
+        "carbon_credits_awarded": 6,
+        "transaction_hash": "0x7f2c38e5d3b95a4a0c8f19167d8c5b7d9d2e898432c6f37a",
+        "timestamp": "2023-06-04T12:19:47Z"
+      }
+    }
+  ]
+} 
