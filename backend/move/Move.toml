@@ -1,0 +1,10 @@
+[package]
+name = "ecochain"
+version = "0.1.0"
+authors = ["EcoChain"]
+
+[addresses]
+ecochain = "0x1"
+
+[dependencies]
+AptosFramework = { git = "https://github.com/aptos-labs/aptos-core.git", subdir = "aptos-move/framework/aptos-framework", rev = "main" } 

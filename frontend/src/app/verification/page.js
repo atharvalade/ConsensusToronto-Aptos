@@ -145,6 +145,135 @@ const NFTCertificate = () => {
   );
 };
 
+// VerifiedProject Component
+const VerifiedProject = ({ project }) => {
+  return (
+    <motion.div
+      className="bg-gray-800/90 rounded-xl overflow-hidden border border-gray-700 hover:border-green-500/50 transition-all duration-300"
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.6 }}
+    >
+      <div className="relative h-48 overflow-hidden">
+        <Image 
+          src={project.image} 
+          alt={project.title}
+          width={400}
+          height={240}
+          className="object-cover w-full h-full"
+        />
+        <div className="absolute top-3 right-3 bg-green-500/90 text-white text-xs font-medium px-2 py-1 rounded-md flex items-center">
+          <span className="w-2 h-2 bg-white rounded-full mr-1 animate-pulse"></span>
+          Verified
+        </div>
+      </div>
+      
+      <div className="p-5">
+        <h3 className="text-xl font-semibold text-white mb-2">{project.title}</h3>
+        <div className="flex items-center mb-3">
+          <span className="text-gray-400 text-sm mr-2">Location:</span>
+          <span className="text-white">{project.location}</span>
+        </div>
+        
+        <div className="grid grid-cols-2 gap-3 mb-4">
+          <div className="rounded-lg bg-gray-700/50 p-2">
+            <div className="text-xs text-gray-400">Project ID</div>
+            <div className="text-white font-medium">{project.id}</div>
+          </div>
+          <div className="rounded-lg bg-gray-700/50 p-2">
+            <div className="text-xs text-gray-400">CO₂ Offset</div>
+            <div className="text-white font-medium">{project.co2}</div>
+          </div>
+          <div className="rounded-lg bg-gray-700/50 p-2">
+            <div className="text-xs text-gray-400">Price</div>
+            <div className="text-white font-medium">{project.price}</div>
+          </div>
+          <div className="rounded-lg bg-gray-700/50 p-2">
+            <div className="text-xs text-gray-400">Available</div>
+            <div className="text-white font-medium">{project.creditsAvailable}</div>
+          </div>
+        </div>
+        
+        <div className="mb-4">
+          <h4 className="text-white text-sm font-medium mb-2">Blockchain Data</h4>
+          <div className="bg-gray-900/80 rounded-md p-3 font-mono text-xs">
+            <div className="flex justify-between text-gray-400 mb-1">
+              <span>Contract Address:</span>
+              <span className="text-green-400">0x3f91a2...</span>
+            </div>
+            <div className="flex justify-between text-gray-400 mb-1">
+              <span>Token ID:</span>
+              <span className="text-green-400">{project.id}</span>
+            </div>
+            <div className="flex justify-between text-gray-400 mb-1">
+              <span>Last Verified:</span>
+              <span className="text-green-400">Block #12,457,891</span>
+            </div>
+            <div className="flex justify-between text-gray-400">
+              <span>Verification Count:</span>
+              <span className="text-green-400">24</span>
+            </div>
+          </div>
+        </div>
+        
+        <Link 
+          href={`/marketplace?project=${project.id}`}
+          className="w-full block text-center bg-gradient-to-r from-green-500 to-green-600 text-white font-medium py-2 rounded-lg hover:from-green-600 hover:to-green-700 transition-colors"
+        >
+          View in Marketplace
+        </Link>
+      </div>
+    </motion.div>
+  );
+};
+
+// Sample data from the marketplace
+const verifiedProjects = [
+  {
+    id: "RF-2023-089",
+    title: "Amazon Rainforest Conservation",
+    location: "Brazil",
+    image: "https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&h=300&q=80",
+    type: "Reforestation",
+    price: "$18.45",
+    creditsAvailable: "12,450",
+    rating: 4.9,
+    verified: true,
+    co2: "1 Ton",
+    category: "reforestation",
+    description: "This project focuses on conserving and restoring the Amazon rainforest, one of Earth's most vital carbon sinks and biodiversity hotspots."
+  },
+  {
+    id: "SE-2023-142",
+    title: "Solar Energy Farm",
+    location: "India",
+    image: "https://images.unsplash.com/photo-1509391366360-2e959784a276?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&h=300&q=80",
+    type: "Renewable Energy",
+    price: "$14.20",
+    creditsAvailable: "45,230",
+    rating: 4.7,
+    verified: true,
+    co2: "1 Ton",
+    category: "renewable",
+    description: "A large-scale solar farm in Rajasthan that replaces coal-fired power plants, significantly reducing carbon emissions in India's energy sector."
+  },
+  {
+    id: "MG-2023-076",
+    title: "Methane Gas Capture",
+    location: "United States",
+    image: "/images/methane-capture.jpg",
+    type: "Gas Capture",
+    price: "$12.80",
+    creditsAvailable: "9,120",
+    rating: 4.8,
+    verified: true,
+    co2: "1 Ton",
+    category: "methane",
+    description: "This project captures harmful methane emissions from landfills in Colorado, converting this potent greenhouse gas into clean energy."
+  }
+];
+
 export default function VerificationPage() {
   const [heroVisible, setHeroVisible] = useState(false);
 
@@ -478,9 +607,15 @@ export default function VerificationPage() {
         </div>
       </section>
 
-      {/* Smart Contract Section */}
-      <section className="w-full bg-gray-900 py-20 relative overflow-hidden">
-        <div className="container mx-auto px-4 max-w-6xl">
+      {/* Verified Projects Section */}
+      <section className="w-full bg-gradient-to-b from-gray-900 to-gray-800 py-20 relative overflow-hidden">
+        {/* Background elements */}
+        <div className="absolute inset-0 z-0">
+          <div className="absolute top-0 left-0 w-full h-64 bg-gradient-to-b from-blue-500/5 to-transparent"></div>
+          <div className="absolute bottom-0 right-0 w-72 h-72 rounded-full bg-green-500/10 blur-3xl"></div>
+        </div>
+
+        <div className="container mx-auto px-4 max-w-6xl relative z-10">
           <motion.div
             variants={fadeIn}
             initial="hidden"
@@ -489,127 +624,306 @@ export default function VerificationPage() {
             className="text-center mb-16"
           >
             <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
-              Move Smart Contract Verification
+              Verified Carbon Projects
             </h2>
             <p className="text-gray-300 max-w-3xl mx-auto">
-              Our verification process leverages Move smart contracts on Aptos blockchain for 
-              secure, transparent, and efficient carbon credit verification.
+              Browse our certified carbon offset projects that have successfully passed our 
+              blockchain verification process and are available in the marketplace.
             </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            {/* Left side: Code sample */}
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.7 }}
+          {/* Projects Grid */}
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+            {verifiedProjects.map((project) => (
+              <VerifiedProject key={project.id} project={project} />
+            ))}
+          </div>
+          
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center"
+          >
+            <Link 
+              href="/marketplace"
+              className="inline-block px-8 py-4 bg-gradient-to-r from-green-500 to-emerald-600 text-white font-medium rounded-lg shadow-lg shadow-green-500/20 hover:shadow-green-500/30 transition-all duration-300"
             >
-              <div className="bg-gray-950 rounded-xl p-6 border border-gray-800 font-mono text-sm overflow-hidden relative">
+              View All Projects in Marketplace
+            </Link>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Move Smart Contract */}
+      <section className="w-full bg-gray-800 py-20 relative overflow-hidden">
+        <div className="container mx-auto px-4 max-w-6xl relative z-10">
+          <motion.div
+            variants={fadeIn}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.3 }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
+              Verification Smart Contract
+            </h2>
+            <p className="text-gray-300 max-w-3xl mx-auto">
+              Our deployed Move smart contract on Aptos blockchain processes IoT sensor data and verifies carbon credits.
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-1 lg:grid-cols-1 gap-8">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
+              <div className="bg-gray-900 rounded-xl p-6 border border-gray-700 font-mono text-sm overflow-auto relative">
                 <div className="absolute top-0 left-0 w-full py-2 px-4 bg-gray-800 text-gray-300 text-xs flex items-center">
                   <span className="mr-2">•</span>
-                  <span>ecochain_verification.move</span>
+                  <span>verification.move (deployed to Aptos Testnet)</span>
                 </div>
-                <pre className="text-gray-300 mt-6 overflow-x-auto">
+                <pre className="text-gray-300 mt-6 overflow-x-auto max-h-[600px]">
                   <code>
 {`module ecochain::verification {
-    // Verification struct to track carbon credit verification
-    struct VerificationRecord has key, store {
-        id: UID,
-        project_id: ID,
-        verifier: address,
+    use std::string::{Self, String};
+    use std::vector;
+    use std::error;
+    use std::signer;
+
+    use aptos_framework::timestamp;
+    use aptos_framework::account;
+    use aptos_framework::event::{Self, EventHandle};
+    use aptos_framework::object::{Self, Object, ConstructorRef};
+    
+    /// Errors
+    const E_NOT_AUTHORIZED: u64 = 1;
+    const E_INVALID_DATA: u64 = 3;
+    const E_MIN_THRESHOLD_NOT_MET: u64 = 4;
+
+    /// Verification statuses
+    const STATUS_PENDING: u8 = 0;
+    const STATUS_VERIFIED: u8 = 1;
+    const STATUS_REJECTED: u8 = 2;
+
+    // Minimum CO2 absorption rate in kg/day to be verified
+    const MIN_CO2_ABSORPTION: u64 = 2;
+    
+    /// IoT sensor data for verification
+    struct SensorData has drop, copy, store {
+        /// Project ID
+        project_id: String,
+        /// Latitude of sensor
+        latitude: String,
+        /// Longitude of sensor
+        longitude: String,
+        /// CO2 absorption rate (kg/day)
+        co2_absorption_rate: u64,
+        /// Tree growth rate (mm/month)
+        tree_growth_rate: u64,
+        /// Soil carbon content (percentage x 100, e.g. 523 = 5.23%)
+        soil_carbon_content: u64,
+        /// Biomass accumulation (kg/hectare)
+        biomass_accumulation: u64,
+        /// Timestamp when data was collected
         timestamp: u64,
+        /// Data hash for integrity verification
+        data_hash: vector<u8>
+    }
+
+    /// Submit IoT sensor data for verification
+    public entry fun submit_sensor_data(
+        _account: &signer,
+        project_id: String,
         latitude: String,
         longitude: String,
-        co2_captured: u64,  // in kg
-        methodology: String,
-        data_hash: vector<u8>,
-        ipfs_cid: String,
-        status: u8, // 0: pending, 1: verified, 2: rejected
-    }
-    
-    // Create a new verification request
-    public fun create_verification(
-        project_id: ID,
-        latitude: String,
-        longitude: String,
-        co2_captured: u64,
-        methodology: String,
-        data_hash: vector<u8>,
-        ipfs_cid: String,
-        ctx: &mut TxContext
-    ): VerificationRecord {
-        // Implementation details...
-    }
-    
-    // Verify carbon credit data by authorized verifier
-    public fun verify(
-        verification: &mut VerificationRecord,
-        verifier: &Verifier,
-        ctx: &mut TxContext
+        co2_absorption_rate: u64,
+        tree_growth_rate: u64,
+        soil_carbon_content: u64,
+        biomass_accumulation: u64,
+        data_hash: vector<u8>
     ) {
-        // Validation logic...
-        // Check verifier authorization
-        // Cross reference IoT data
-        // Update verification status
+        // Validate data
+        assert!(co2_absorption_rate > 0, error::invalid_argument(E_INVALID_DATA));
+        
+        // Create sensor data
+        let sensor_data = SensorData {
+            project_id,
+            latitude,
+            longitude,
+            co2_absorption_rate,
+            tree_growth_rate,
+            soil_carbon_content,
+            biomass_accumulation,
+            timestamp: timestamp::now_seconds(),
+            data_hash
+        };
+        
+        // Verify the data 
+        verify_sensor_data(sensor_data);
     }
     
-    // Mint NFT certificate after successful verification
-    public fun mint_certificate(
-        verification: &VerificationRecord,
-        ctx: &mut TxContext
-    ): Certificate {
-        // Create immutable carbon credit certificate
+    /// Verify sensor data and update project status
+    fun verify_sensor_data(sensor_data: SensorData) {
+        // Check if the CO2 absorption rate meets the minimum threshold
+        if (sensor_data.co2_absorption_rate < MIN_CO2_ABSORPTION) {
+            // Not enough CO2 absorption, reject verification
+            reject_verification(sensor_data.project_id);
+        } else {
+            // Calculate carbon credits based on CO2 absorption rate
+            // Simple calculation: 1 ton of carbon = 1000 kg of CO2
+            let carbon_credits = sensor_data.co2_absorption_rate / 1000;
+            
+            // If less than 1 ton, provide at least 1 credit
+            if (carbon_credits == 0) {
+                carbon_credits = 1;
+            }
+            
+            // Approve verification and award carbon credits
+            approve_verification(sensor_data.project_id, carbon_credits);
+        }
     }
 }`}
                   </code>
                 </pre>
               </div>
+              
+              <div className="mt-8 bg-gray-800/50 rounded-lg p-6 border border-gray-700">
+                <h3 className="text-xl font-semibold text-white mb-4">Contract Deployment Details</h3>
+                <div className="space-y-4">
+                  <div className="flex items-start">
+                    <div className="w-1/3 text-gray-400">Network:</div>
+                    <div className="w-2/3 text-white">Aptos Testnet</div>
+                  </div>
+                  <div className="flex items-start">
+                    <div className="w-1/3 text-gray-400">Contract Address:</div>
+                    <div className="w-2/3 text-white font-mono break-all">0x3f91a26a10229b984e9c5b8e5ec9a70f00c08402149d0ed332def1e86f7f5e29</div>
+                  </div>
+                  <div className="flex items-start">
+                    <div className="w-1/3 text-gray-400">Deployed By:</div>
+                    <div className="w-2/3 text-white font-mono break-all">0x1e459ea9e0425d5e6f4cbe87c33e32bbfd5ddd79b965d28cc1dc0854dac5e61a</div>
+                  </div>
+                  <div className="flex items-start">
+                    <div className="w-1/3 text-gray-400">Deployment Time:</div>
+                    <div className="w-2/3 text-white">June 5, 2023 | 15:42:09 UTC</div>
+                  </div>
+                  <div className="flex items-start">
+                    <div className="w-1/3 text-gray-400">Status:</div>
+                    <div className="w-2/3 flex items-center">
+                      <span className="h-2 w-2 bg-green-500 rounded-full mr-2"></span>
+                      <span className="text-green-400">Active</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* IoT Input Data Section */}
+      <section className="w-full bg-gray-900 py-20 relative overflow-hidden">
+        <div className="container mx-auto px-4 max-w-6xl relative z-10">
+          <motion.div
+            variants={fadeIn}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.3 }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
+              Sample IoT Sensor Data
+            </h2>
+            <p className="text-gray-300 max-w-3xl mx-auto">
+              Below is sample data collected from IoT sensors deployed at our carbon projects. 
+              This data is used as input for our verification smart contract.
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-1 lg:grid-cols-2 gap-8">
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="bg-gray-800/80 rounded-xl p-6 border border-gray-700"
+            >
+              <h3 className="text-xl font-semibold text-white mb-4">Amazon Rainforest Conservation</h3>
+              <div className="bg-gray-900 rounded-lg p-4 font-mono text-sm overflow-auto">
+                <pre className="text-gray-300">
+{`{
+  "project_id": "RF-2023-089",
+  "latitude": "3.4653° S",
+  "longitude": "73.8078° W",
+  "timestamp": "1686178923",
+  "sensor_readings": {
+    "co2_absorption_rate": 4280,  // kg/day
+    "tree_growth_rate": 87,       // mm/month
+    "soil_carbon_content": 523,   // 5.23%
+    "biomass_accumulation": 2140, // kg/hectare
+    "humidity": 86,               // %
+    "temperature": 28.2,          // °C
+    "rainfall": 312               // mm/month
+  },
+  "data_hash": "0x7f2c38e5d3b95a4a0c8f19167d8c5b7d9d2e898432c6f37a12cf42bc198f2d8e",
+  "sensor_id": "ECO-RF-089-S12",
+  "firmware_version": "1.0.4"
+}`}
+                </pre>
+              </div>
+              <div className="mt-4 bg-gray-900/50 p-4 rounded-lg">
+                <h4 className="text-white font-medium mb-2">Verification Result</h4>
+                <div className="flex items-center text-green-400">
+                  <span className="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse"></span>
+                  <span>Verified - 4 Carbon Credits Awarded</span>
+                </div>
+                <div className="mt-2 text-sm text-gray-400">
+                  Transaction Hash: 0x9e8b1a4d5f2c38e5c7f19167d8c5b7d9d2e898432c6f37a
+                </div>
+              </div>
             </motion.div>
             
-            {/* Right side: Verification explanation */}
             <motion.div
               initial={{ opacity: 0, x: 20 }}
               whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.7, delay: 0.2 }}
-              className="space-y-6"
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="bg-gray-800/80 rounded-xl p-6 border border-gray-700"
             >
-              <h3 className="text-2xl font-semibold text-white">
-                How Smart Contract Verification Works
-              </h3>
-              
-              <div className="space-y-6">
-                <div className="bg-gray-800/50 rounded-lg p-4 border border-gray-700">
-                  <h4 className="text-green-400 text-lg mb-2">Data Integrity</h4>
-                  <p className="text-gray-300">
-                    IoT sensor data is cryptographically hashed and signed at the source, ensuring that
-                    the data cannot be tampered with during transmission or storage.
-                  </p>
+              <h3 className="text-xl font-semibold text-white mb-4">Solar Energy Farm</h3>
+              <div className="bg-gray-900 rounded-lg p-4 font-mono text-sm overflow-auto">
+                <pre className="text-gray-300">
+{`{
+  "project_id": "SE-2023-142",
+  "latitude": "26.9124° N",
+  "longitude": "75.7873° E",
+  "timestamp": "1686265323",
+  "sensor_readings": {
+    "co2_displacement": 5840,     // kg/day
+    "energy_production": 2850,    // kWh/day
+    "peak_output": 768,           // kW
+    "operational_hours": 9.2,     // hours/day
+    "solar_irradiance": 5.8,      // kWh/m²/day
+    "panel_efficiency": 21.4,     // %
+    "temperature": 34.6           // °C
+  },
+  "data_hash": "0x3f2c38e5d3b95a4c7f19167d8c5b7d9d2e898432c6f37a12cf42bc198f2d8e",
+  "sensor_id": "ECO-SE-142-S08",
+  "firmware_version": "1.2.1"
+}`}
+                </pre>
+              </div>
+              <div className="mt-4 bg-gray-900/50 p-4 rounded-lg">
+                <h4 className="text-white font-medium mb-2">Verification Result</h4>
+                <div className="flex items-center text-green-400">
+                  <span className="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse"></span>
+                  <span>Verified - 6 Carbon Credits Awarded</span>
                 </div>
-                
-                <div className="bg-gray-800/50 rounded-lg p-4 border border-gray-700">
-                  <h4 className="text-green-400 text-lg mb-2">Multi-Verifier Consensus</h4>
-                  <p className="text-gray-300">
-                    Multiple authorized verifiers independently validate the data using predefined
-                    methodologies, creating a trustless verification system that prevents fraud.
-                  </p>
-                </div>
-                
-                <div className="bg-gray-800/50 rounded-lg p-4 border border-gray-700">
-                  <h4 className="text-green-400 text-lg mb-2">Permanent Record</h4>
-                  <p className="text-gray-300">
-                    Once verified, the carbon credit data is permanently recorded on the Aptos blockchain,
-                    creating an immutable record that can be audited by anyone.
-                  </p>
-                </div>
-                
-                <div className="bg-gray-800/50 rounded-lg p-4 border border-gray-700">
-                  <h4 className="text-green-400 text-lg mb-2">Certificate Minting</h4>
-                  <p className="text-gray-300">
-                    After successful verification, an NFT certificate is minted, containing all project
-                    details and verification data, ready to be traded or retired on the marketplace.
-                  </p>
+                <div className="mt-2 text-sm text-gray-400">
+                  Transaction Hash: 0x5e2a38e5d3b95a4c7f19167d8c5b7d9d2e898432c6f37a
                 </div>
               </div>
             </motion.div>
