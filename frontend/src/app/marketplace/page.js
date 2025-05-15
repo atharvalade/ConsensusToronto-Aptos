@@ -21,7 +21,7 @@ const ProjectCard = ({ project }) => {
         <div className="flex justify-between items-start mb-3">
           <div>
             <h4 className="text-lg font-semibold text-gray-900 mb-1">{project.title}</h4>
-            <p className="text-gray-500 text-sm flex items-center">
+            <p className="text-gray-600 text-sm flex items-center">
               <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -41,7 +41,7 @@ const ProjectCard = ({ project }) => {
               {"★".repeat(Math.floor(project.rating))}
               {"☆".repeat(5 - Math.floor(project.rating))}
             </div>
-            <span className="text-gray-500 text-xs ml-2">{project.rating}/5</span>
+            <span className="text-gray-600 text-xs ml-2">{project.rating}/5</span>
           </div>
           
           {project.verified && (
@@ -55,8 +55,8 @@ const ProjectCard = ({ project }) => {
         </div>
         
         <div className="flex justify-between items-center mb-4">
-          <span className="text-gray-600 text-sm">Available: {project.creditsAvailable}</span>
-          <span className="text-gray-600 text-sm">{project.co2} CO₂</span>
+          <span className="text-gray-700 text-sm">Available: {project.creditsAvailable}</span>
+          <span className="text-gray-700 text-sm">{project.co2} CO₂</span>
         </div>
         
         <div className="flex justify-between items-center">
@@ -460,7 +460,7 @@ export default function MarketplacePage() {
                     className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-green-600" 
                     defaultValue="20"
                   />
-                  <div className="flex justify-between text-xs text-gray-500 mt-2">
+                  <div className="flex justify-between text-xs text-gray-700 mt-2">
                     <span>$10</span>
                     <span>$25</span>
                   </div>
@@ -471,15 +471,15 @@ export default function MarketplacePage() {
                 <h3 className="text-lg font-semibold text-gray-800 mb-3">Your Impact</h3>
                 <div className="space-y-4">
                   <div>
-                    <p className="text-sm text-gray-500 mb-1">Total Credits Purchased</p>
+                    <p className="text-sm text-gray-700 mb-1">Total Credits Purchased</p>
                     <p className="text-2xl font-bold text-green-600">0</p>
                   </div>
                   <div>
-                    <p className="text-sm text-gray-500 mb-1">CO₂ Offset</p>
+                    <p className="text-sm text-gray-700 mb-1">CO₂ Offset</p>
                     <p className="text-2xl font-bold text-green-600">0 Tons</p>
                   </div>
                   <div>
-                    <p className="text-sm text-gray-500 mb-2">Verification Level</p>
+                    <p className="text-sm text-gray-700 mb-2">Verification Level</p>
                     <div className="w-full bg-gray-200 rounded-full h-2.5">
                       <div className="bg-green-600 h-2.5 rounded-full w-0"></div>
                     </div>
@@ -496,12 +496,12 @@ export default function MarketplacePage() {
             <div className="md:w-3/4">
               <div className="bg-white shadow-md rounded-lg p-4 mb-6">
                 <div className="flex justify-between items-center">
-                  <div className="text-gray-600">
+                  <div className="text-gray-700">
                     Showing <span className="font-semibold">{filteredProjects.length}</span> projects
                   </div>
                   
                   <div className="flex items-center space-x-2">
-                    <span className="text-sm text-gray-500">Sort by:</span>
+                    <span className="text-sm text-gray-700">Sort by:</span>
                     <select className="border rounded-md px-2 py-1 text-sm">
                       <option>Price (Low to High)</option>
                       <option>Price (High to Low)</option>
@@ -567,19 +567,19 @@ export default function MarketplacePage() {
                     <td className="py-4 px-4">
                       <div>
                         <div className="text-sm font-medium text-gray-900">{tx.project}</div>
-                        <div className="text-xs text-gray-500">{tx.location}</div>
+                        <div className="text-xs text-gray-700">{tx.location}</div>
                       </div>
                     </td>
                     <td className="py-4 px-4">
                       <div>
                         <div className="text-sm font-medium">{tx.credits}</div>
-                        <div className="text-xs text-gray-500">CO₂ Tons</div>
+                        <div className="text-xs text-gray-700">CO₂ Tons</div>
                       </div>
                     </td>
                     <td className="py-4 px-4">
                       <div>
                         <div className="text-sm font-medium">{tx.price}</div>
-                        <div className="text-xs text-gray-500">{tx.pricePerCredit}/credit</div>
+                        <div className="text-xs text-gray-700">{tx.pricePerCredit}/credit</div>
                       </div>
                     </td>
                     <td className="py-4 px-4">
@@ -587,8 +587,8 @@ export default function MarketplacePage() {
                     </td>
                     <td className="py-4 px-4">
                       <div>
-                        <div className="text-sm text-gray-500">{tx.date}</div>
-                        <div className="text-xs text-gray-400 truncate max-w-[120px]">{tx.txHash}</div>
+                        <div className="text-sm text-gray-700">{tx.date}</div>
+                        <div className="text-xs text-gray-600 truncate max-w-[120px]">{tx.txHash}</div>
                       </div>
                     </td>
                   </motion.tr>
