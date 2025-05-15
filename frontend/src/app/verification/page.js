@@ -83,6 +83,13 @@ const IoTDataComponent = ({ title, data, icon }) => {
 
 // NFT Certificate Component
 const NFTCertificate = () => {
+  // Contract address from our deployment
+  const contractAddress = "0xda14cb8535c599bd7eeedaf980c4e6fa8c1605047ff88403b6120f7437b7b6c0";
+  // A sample transaction hash from our verification
+  const transactionHash = "0xa1f57142a184ddb1ec4b0b658fb6b4614cb4fd7eb61630319b604831f294b0e2";
+  // A sample object address (would come from actual NFT)
+  const objectAddress = "0x7f2c38e5d3b95a4a0c8f19167d8c5b7d9d2e898432c6f37a12cf42bc198f2d8e";
+
   return (
     <motion.div
       className="relative rounded-xl overflow-hidden border-4 border-green-500/50 backdrop-blur-sm"
@@ -130,15 +137,46 @@ const NFTCertificate = () => {
 
         <div className="mt-6 border-t border-white/20 pt-4">
           <p className="text-gray-400 text-sm">Verification Hash</p>
-          <p className="text-white/70 font-mono text-xs truncate">0x7f2c38e5d3b95a4a0c8f19167d8c5b7d9d2e898432c6f37a12cf42bc198f2d8e</p>
+          <p className="text-white/70 font-mono text-xs truncate">{transactionHash}</p>
         </div>
 
-        <div className="mt-6 flex justify-between items-center">
-          <div className="flex items-center gap-2">
-            <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
-            <span className="text-green-400 text-sm">Verified</span>
+        <div className="mt-4 border-t border-white/20 pt-4 flex flex-col gap-2">
+          <div className="flex justify-between items-center">
+            <div className="flex items-center gap-2">
+              <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
+              <span className="text-green-400 text-sm">Verified</span>
+            </div>
+            <a 
+              href={`https://explorer.aptoslabs.com/account/${contractAddress}?network=testnet`}
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-blue-400 text-sm hover:underline"
+            >
+              View Contract
+            </a>
           </div>
-          <Link href="#" className="text-blue-400 text-sm hover:underline">View on Explorer</Link>
+          <div className="flex justify-between items-center">
+            <span className="text-gray-400 text-sm">NFT Certificate</span>
+            <a 
+              href={`https://explorer.aptoslabs.com/txn/${transactionHash}?network=testnet`}
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-blue-400 text-sm hover:underline"
+            >
+              View Transaction
+            </a>
+          </div>
+          <div className="flex justify-between items-center">
+            <span className="text-gray-400 text-sm">Object Address</span>
+            <a 
+              href={`https://explorer.aptoslabs.com/object/${objectAddress}?network=testnet`}
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-blue-400 text-sm hover:underline"
+            >
+              View Object
+            </a>
+          </div>
         </div>
       </div>
     </motion.div>
@@ -147,6 +185,9 @@ const NFTCertificate = () => {
 
 // VerifiedProject Component
 const VerifiedProject = ({ project }) => {
+  // Contract address from our deployment
+  const contractAddress = "0xda14cb8535c599bd7eeedaf980c4e6fa8c1605047ff88403b6120f7437b7b6c0";
+  
   return (
     <motion.div
       className="bg-gray-800/90 rounded-xl overflow-hidden border border-gray-700 hover:border-green-500/50 transition-all duration-300"
@@ -198,31 +239,41 @@ const VerifiedProject = ({ project }) => {
         <div className="mb-4">
           <h4 className="text-white text-sm font-medium mb-2">Blockchain Data</h4>
           <div className="bg-gray-900/80 rounded-md p-3 font-mono text-xs">
-            <div className="flex justify-between text-gray-400 mb-1">
-              <span>Contract Address:</span>
-              <span className="text-green-400">0x3f91a2...</span>
-            </div>
-            <div className="flex justify-between text-gray-400 mb-1">
-              <span>Token ID:</span>
-              <span className="text-green-400">{project.id}</span>
-            </div>
-            <div className="flex justify-between text-gray-400 mb-1">
-              <span>Last Verified:</span>
-              <span className="text-green-400">Block #12,457,891</span>
-            </div>
-            <div className="flex justify-between text-gray-400">
-              <span>Verification Count:</span>
-              <span className="text-green-400">24</span>
+            <div className="flex flex-col gap-2">
+              <div>
+                <span className="text-green-400">Contract:</span> 
+                <span className="text-gray-300 ml-2 truncate">{contractAddress.substring(0, 18)}...</span>
+              </div>
+              <div>
+                <span className="text-green-400">Status:</span> 
+                <span className="text-gray-300 ml-2">Verified</span>
+              </div>
+              <div>
+                <span className="text-green-400">Carbon Credits:</span> 
+                <span className="text-gray-300 ml-2">{project.carbonCredits || '500'} tons</span>
+              </div>
             </div>
           </div>
         </div>
         
-        <Link 
-          href={`/marketplace?project=${project.id}`}
-          className="w-full block text-center bg-gradient-to-r from-green-500 to-green-600 text-white font-medium py-2 rounded-lg hover:from-green-600 hover:to-green-700 transition-colors"
-        >
-          View in Marketplace
-        </Link>
+        <div className="flex flex-col gap-2">
+          <a 
+            href={`https://explorer.aptoslabs.com/account/${contractAddress}/modules?network=testnet`}
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="text-center w-full bg-green-600/80 hover:bg-green-600 transition-colors text-white rounded-lg py-2 text-sm font-medium"
+          >
+            View Contract on Explorer
+          </a>
+          <a 
+            href={`https://explorer.aptoslabs.com/account/${contractAddress}?network=testnet`}
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="text-center w-full bg-blue-600/80 hover:bg-blue-600 transition-colors text-white rounded-lg py-2 text-sm font-medium"
+          >
+            View NFT Collection
+          </a>
+        </div>
       </div>
     </motion.div>
   );

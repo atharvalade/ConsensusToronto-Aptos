@@ -7,6 +7,37 @@ import Link from 'next/link';
 
 // Components for marketplace
 const ProjectCard = ({ project }) => {
+  const [purchasing, setPurchasing] = useState(false);
+  const [transactionHash, setTransactionHash] = useState(null);
+  const [error, setError] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const contractAddress = "0xda14cb8535c599bd7eeedaf980c4e6fa8c1605047ff88403b6120f7437b7b6c0";
+
+  // Mock function to simulate transaction
+  const purchaseWithAPT = async () => {
+    setPurchasing(true);
+    setError(null);
+    
+    try {
+      // Simulate API call to purchase credits
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      // Mock transaction hash - in a real app, this would come from the blockchain
+      const hash = "0x53655ef3c663b504a01f447f6d7f0e36a4a93e254af4bd4bcd5253aba297b52e";
+      setTransactionHash(hash);
+      setShowModal(true);
+    } catch (err) {
+      setError("Transaction failed. Please try again.");
+    } finally {
+      setPurchasing(false);
+    }
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+    setTransactionHash(null);
+  };
+
   return (
     <motion.div 
       className="bg-white rounded-xl overflow-hidden shadow-lg border border-gray-200 h-full"
@@ -66,12 +97,72 @@ const ProjectCard = ({ project }) => {
         </div>
         
         <div className="flex justify-between items-center">
-          <span className="text-2xl font-bold text-gray-900">{project.price}</span>
-          <button className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-medium transition-colors">
-            Purchase
+          <div className="flex flex-col">
+            <span className="text-2xl font-bold text-gray-900">{project.price}</span>
+            <span className="text-gray-500 text-xs">≈ 0.025 APT</span>
+          </div>
+          <button 
+            onClick={purchaseWithAPT}
+            disabled={purchasing}
+            className={`${
+              purchasing ? "bg-gray-500" : "bg-green-600 hover:bg-green-700"
+            } text-white px-4 py-2 rounded-lg font-medium transition-colors flex items-center`}
+          >
+            {purchasing ? (
+              <>
+                <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                Processing
+              </>
+            ) : (
+              "Purchase"
+            )}
           </button>
         </div>
       </div>
+
+      {/* Success Modal */}
+      {showModal && (
+        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-xl p-6 w-full max-w-md">
+            <div className="flex items-center justify-center mb-4">
+              <div className="rounded-full bg-green-100 p-3">
+                <svg className="h-8 w-8 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+              </div>
+            </div>
+            <h3 className="text-xl font-bold text-center mb-2">Purchase Successful!</h3>
+            <p className="text-gray-600 text-center mb-6">
+              Your carbon credit NFT has been transferred to your wallet.
+            </p>
+            
+            <div className="bg-gray-100 rounded-lg p-4 mb-6">
+              <p className="text-gray-700 text-sm font-medium mb-1">Transaction Hash:</p>
+              <p className="text-gray-600 text-xs font-mono truncate">{transactionHash}</p>
+            </div>
+            
+            <div className="flex gap-3">
+              <a 
+                href={`https://explorer.aptoslabs.com/txn/${transactionHash}?network=testnet`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex-1 bg-blue-600 text-white text-center py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors"
+              >
+                View on Explorer
+              </a>
+              <button 
+                onClick={closeModal}
+                className="flex-1 bg-gray-200 text-gray-800 py-2 rounded-lg font-medium hover:bg-gray-300 transition-colors"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </motion.div>
   );
 };
@@ -94,6 +185,46 @@ const ProjectFilter = ({ categories, activeCategory, setActiveCategory }) => {
           </button>
         ))}
       </div>
+    </div>
+  );
+};
+
+// Wallet Connect Button Component
+const WalletButton = () => {
+  const [connected, setConnected] = useState(false);
+  const [address, setAddress] = useState("");
+  
+  const connectWallet = () => {
+    // In a real app, this would use the Aptos wallet adapter
+    setConnected(true);
+    setAddress("0x232b...f892");
+  };
+
+  const disconnectWallet = () => {
+    setConnected(false);
+    setAddress("");
+  };
+
+  return (
+    <div className="flex items-center">
+      {connected ? (
+        <div className="flex items-center gap-3">
+          <span className="text-sm font-medium text-gray-700">{address}</span>
+          <button
+            onClick={disconnectWallet}
+            className="bg-gray-200 text-gray-800 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-300 transition-colors"
+          >
+            Disconnect
+          </button>
+        </div>
+      ) : (
+        <button
+          onClick={connectWallet}
+          className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors"
+        >
+          Connect Wallet
+        </button>
+      )}
     </div>
   );
 };
@@ -447,77 +578,92 @@ export default function MarketplacePage() {
             </p>
           </motion.div>
 
-          <div className="flex flex-col md:flex-row gap-8">
-            {/* Left sidebar for filters */}
-            <div className="md:w-1/4">
+          <div className="flex flex-col lg:flex-row justify-between items-start gap-6 mb-10">
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">Carbon Credit Marketplace</h1>
+              <p className="text-gray-600 max-w-2xl">
+                Browse and purchase verified carbon credits directly from environmental projects around the world.
+              </p>
+            </div>
+            
+            {/* Add Wallet Button */}
+            <WalletButton />
+          </div>
+          
+          {/* Market Stats */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+            <motion.div 
+              className="bg-white rounded-lg shadow-md p-6"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              <div className="flex items-center justify-between">
+                <h3 className="text-lg font-semibold text-gray-900">Total Credits Available</h3>
+                <span className="text-green-600 text-2xl font-bold">122,450</span>
+              </div>
+            </motion.div>
+            
+            <motion.div 
+              className="bg-white rounded-lg shadow-md p-6"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+            >
+              <div className="flex items-center justify-between">
+                <h3 className="text-lg font-semibold text-gray-900">Credits Sold</h3>
+                <span className="text-green-600 text-2xl font-bold">42,000</span>
+              </div>
+            </motion.div>
+            
+            <motion.div 
+              className="bg-white rounded-lg shadow-md p-6"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.4 }}
+            >
+              <div className="flex items-center justify-between">
+                <h3 className="text-lg font-semibold text-gray-900">Credits Retired</h3>
+                <span className="text-green-600 text-2xl font-bold">18,000</span>
+              </div>
+            </motion.div>
+          </div>
+          
+          {/* Main Content */}
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+            <div className="lg:col-span-1">
               <ProjectFilter 
                 categories={projectCategories}
                 activeCategory={activeCategory}
                 setActiveCategory={setActiveCategory}
               />
               
-              <div className="bg-white shadow-md rounded-lg p-4 mb-6">
-                <h3 className="text-lg font-semibold text-gray-800 mb-3">Price Range</h3>
-                <div className="px-2">
-                  <input 
-                    type="range" 
-                    min="10" 
-                    max="25" 
-                    className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-green-600" 
-                    defaultValue="20"
-                  />
-                  <div className="flex justify-between text-xs text-gray-700 mt-2">
-                    <span>$10</span>
-                    <span>$25</span>
-                  </div>
-                </div>
-              </div>
-              
+              {/* Recent Transactions */}
               <div className="bg-white shadow-md rounded-lg p-4">
-                <h3 className="text-lg font-semibold text-gray-800 mb-3">Your Impact</h3>
-                <div className="space-y-4">
-                  <div>
-                    <p className="text-sm text-gray-700 mb-1">Total Credits Purchased</p>
-                    <p className="text-2xl font-bold text-green-600">0</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-gray-700 mb-1">CO₂ Offset</p>
-                    <p className="text-2xl font-bold text-green-600">0 Tons</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-gray-700 mb-2">Verification Level</p>
-                    <div className="w-full bg-gray-200 rounded-full h-2.5">
-                      <div className="bg-green-600 h-2.5 rounded-full w-0"></div>
+                <h3 className="text-lg font-semibold text-gray-800 mb-3">Recent Transactions</h3>
+                <div className="space-y-3">
+                  {transactions.slice(0, 5).map((tx, index) => (
+                    <div key={index} className="border-b border-gray-100 pb-2 last:border-0">
+                      <div className="flex items-center justify-between">
+                        <span className={`text-sm ${tx.type === 'Purchase' ? 'text-blue-600' : 'text-purple-600'}`}>
+                          {tx.type}
+                        </span>
+                        <span className="text-sm text-gray-500">{tx.date}</span>
+                      </div>
+                      <div className="flex items-center justify-between mt-1">
+                        <span className="text-sm text-gray-600">{tx.project}</span>
+                        <span className="text-sm font-medium">{tx.amount}</span>
+                      </div>
                     </div>
-                  </div>
-                  
-                  <button className="w-full bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-lg transition-colors">
-                    Connect Wallet
-                  </button>
+                  ))}
                 </div>
+                <Link href="#" className="text-blue-600 text-sm mt-3 block text-center hover:underline">
+                  View All Transactions
+                </Link>
               </div>
             </div>
             
-            {/* Right side for projects grid */}
-            <div className="md:w-3/4">
-              <div className="bg-white shadow-md rounded-lg p-4 mb-6">
-                <div className="flex justify-between items-center">
-                  <div className="text-gray-700">
-                    Showing <span className="font-semibold">{filteredProjects.length}</span> projects
-                  </div>
-                  
-                  <div className="flex items-center space-x-2">
-                    <span className="text-sm text-gray-700">Sort by:</span>
-                    <select className="border rounded-md px-2 py-1 text-sm text-gray-800 bg-white">
-                      <option>Price (Low to High)</option>
-                      <option>Price (High to Low)</option>
-                      <option>Rating</option>
-                      <option>Availability</option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-              
+            <div className="lg:col-span-3">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {filteredProjects.map((project) => (
                   <ProjectCard key={project.id} project={project} />

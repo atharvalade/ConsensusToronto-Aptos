@@ -4,9 +4,15 @@
   "description": "This folder contains the Move smart contracts for the EcoChain platform that run on the Aptos blockchain.",
   "main": "frontend_integration.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "mint-nfts": "node mint_nfts.js",
+    "deploy": "bash aptos_deploy.sh"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "@aptos-labs/ts-sdk": "^1.39.0",
+    "aptos": "^1.21.0"
+  }
 }
