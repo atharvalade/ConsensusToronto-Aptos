@@ -188,6 +188,16 @@ const VerifiedProject = ({ project }) => {
   // Contract address from our deployment
   const contractAddress = "0xda14cb8535c599bd7eeedaf980c4e6fa8c1605047ff88403b6120f7437b7b6c0";
   
+  // Use NFT data if available, fallback to a mock address
+  const nftData = project.nft_data || {
+    transaction_hash: "0x53655ef3c663b504a01f447f6d7f0e36a4a93e254af4bd4bcd5253aba297b52e",
+    explorer_urls: {
+      transaction: `https://explorer.aptoslabs.com/txn/0x53655ef3c663b504a01f447f6d7f0e36a4a93e254af4bd4bcd5253aba297b52e?network=testnet`,
+      contract: `https://explorer.aptoslabs.com/account/${contractAddress}?network=testnet`,
+      object: `https://explorer.aptoslabs.com/account/${contractAddress}/tokens?network=testnet`,
+    }
+  };
+  
   return (
     <motion.div
       className="bg-gray-800/90 rounded-xl overflow-hidden border border-gray-700 hover:border-green-500/50 transition-all duration-300"
@@ -224,11 +234,11 @@ const VerifiedProject = ({ project }) => {
           </div>
           <div className="rounded-lg bg-gray-700/50 p-2">
             <div className="text-xs text-gray-400">CO₂ Offset</div>
-            <div className="text-white font-medium">{project.co2}</div>
+            <div className="text-white font-medium">{project.co2TonsPerCredit || '1'} tons</div>
           </div>
           <div className="rounded-lg bg-gray-700/50 p-2">
             <div className="text-xs text-gray-400">Price</div>
-            <div className="text-white font-medium">{project.price}</div>
+            <div className="text-white font-medium">${project.price/100}</div>
           </div>
           <div className="rounded-lg bg-gray-700/50 p-2">
             <div className="text-xs text-gray-400">Available</div>
@@ -249,8 +259,8 @@ const VerifiedProject = ({ project }) => {
                 <span className="text-gray-300 ml-2">Verified</span>
               </div>
               <div>
-                <span className="text-green-400">Carbon Credits:</span> 
-                <span className="text-gray-300 ml-2">{project.carbonCredits || '500'} tons</span>
+                <span className="text-green-400">Transaction:</span> 
+                <span className="text-gray-300 ml-2 truncate">{nftData.transaction_hash.substring(0, 18)}...</span>
               </div>
             </div>
           </div>
@@ -258,7 +268,7 @@ const VerifiedProject = ({ project }) => {
         
         <div className="flex flex-col gap-2">
           <a 
-            href={`https://explorer.aptoslabs.com/account/${contractAddress}/modules?network=testnet`}
+            href={nftData.explorer_urls?.contract || `https://explorer.aptoslabs.com/account/${contractAddress}/modules?network=testnet`}
             target="_blank" 
             rel="noopener noreferrer"
             className="text-center w-full bg-green-600/80 hover:bg-green-600 transition-colors text-white rounded-lg py-2 text-sm font-medium"
@@ -266,12 +276,12 @@ const VerifiedProject = ({ project }) => {
             View Contract on Explorer
           </a>
           <a 
-            href={`https://explorer.aptoslabs.com/account/${contractAddress}?network=testnet`}
+            href={nftData.explorer_urls?.transaction || `https://explorer.aptoslabs.com/txn/${nftData.transaction_hash}?network=testnet`}
             target="_blank" 
             rel="noopener noreferrer"
             className="text-center w-full bg-blue-600/80 hover:bg-blue-600 transition-colors text-white rounded-lg py-2 text-sm font-medium"
           >
-            View NFT Collection
+            View Transaction
           </a>
         </div>
       </div>

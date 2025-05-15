@@ -90,20 +90,14 @@ async function main() {
           100, // Royalty points denominator
           0, // Royalty points numerator
           [
-            'location', 'type', 'co2Offset', 'price', 
-            'creditsAvailable', 'verified', 'rating'
+            'location', 'type', 'price'
           ], // Property keys
           [
-            project.location || '', 
-            project.type || '', 
-            project.co2TonsPerCredit?.toString() || '1', 
-            project.price?.toString() || '0',
-            project.creditsAvailable?.toString() || '0', 
-            project.verified?.toString() || 'false', 
-            project.rating?.toString() || '0'
+            project.location, 
+            project.type, 
+            project.price.toString()
           ], // Property values
           [
-            'string', 'string', 'string', 'string',
             'string', 'string', 'string'
           ] // Property types
         );

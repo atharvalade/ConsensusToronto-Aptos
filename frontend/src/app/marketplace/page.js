@@ -4,6 +4,13 @@ import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
+import dynamic from 'next/dynamic';
+
+// Dynamically import wallet components with SSR disabled
+const WalletComponents = dynamic(
+  () => import('./WalletComponents.js').then((mod) => mod.default),
+  { ssr: false }
+);
 
 // Components for marketplace
 const ProjectCard = ({ project }) => {
@@ -11,26 +18,22 @@ const ProjectCard = ({ project }) => {
   const [transactionHash, setTransactionHash] = useState(null);
   const [error, setError] = useState(null);
   const [showModal, setShowModal] = useState(false);
-  const contractAddress = "0xda14cb8535c599bd7eeedaf980c4e6fa8c1605047ff88403b6120f7437b7b6c0";
-
-  // Mock function to simulate transaction
-  const purchaseWithAPT = async () => {
+  
+  // We'll pass these functions to the WalletComponents
+  const startPurchase = () => {
     setPurchasing(true);
-    setError(null);
-    
-    try {
-      // Simulate API call to purchase credits
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      // Mock transaction hash - in a real app, this would come from the blockchain
-      const hash = "0x53655ef3c663b504a01f447f6d7f0e36a4a93e254af4bd4bcd5253aba297b52e";
-      setTransactionHash(hash);
-      setShowModal(true);
-    } catch (err) {
-      setError("Transaction failed. Please try again.");
-    } finally {
-      setPurchasing(false);
-    }
+  };
+  
+  const completePurchase = (hash) => {
+    setTransactionHash(hash);
+    setShowModal(true);
+    setPurchasing(false);
+  };
+  
+  const handlePurchaseError = (err) => {
+    console.error("Transaction error:", err);
+    setError(err.message || "Transaction failed. Please try again.");
+    setPurchasing(false);
   };
 
   const closeModal = () => {
@@ -101,25 +104,13 @@ const ProjectCard = ({ project }) => {
             <span className="text-2xl font-bold text-gray-900">{project.price}</span>
             <span className="text-gray-500 text-xs">≈ 0.025 APT</span>
           </div>
-          <button 
-            onClick={purchaseWithAPT}
-            disabled={purchasing}
-            className={`${
-              purchasing ? "bg-gray-500" : "bg-green-600 hover:bg-green-700"
-            } text-white px-4 py-2 rounded-lg font-medium transition-colors flex items-center`}
-          >
-            {purchasing ? (
-              <>
-                <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                </svg>
-                Processing
-              </>
-            ) : (
-              "Purchase"
-            )}
-          </button>
+          <WalletComponents 
+            project={project} 
+            purchasing={purchasing}
+            onStartPurchase={startPurchase}
+            onCompletePurchase={completePurchase}
+            onError={handlePurchaseError}
+          />
         </div>
       </div>
 
@@ -189,45 +180,10 @@ const ProjectFilter = ({ categories, activeCategory, setActiveCategory }) => {
   );
 };
 
-// Wallet Connect Button Component
-const WalletButton = () => {
-  const [connected, setConnected] = useState(false);
-  const [address, setAddress] = useState("");
-  
-  const connectWallet = () => {
-    // In a real app, this would use the Aptos wallet adapter
-    setConnected(true);
-    setAddress("0x232b...f892");
-  };
-
-  const disconnectWallet = () => {
-    setConnected(false);
-    setAddress("");
-  };
-
-  return (
-    <div className="flex items-center">
-      {connected ? (
-        <div className="flex items-center gap-3">
-          <span className="text-sm font-medium text-gray-700">{address}</span>
-          <button
-            onClick={disconnectWallet}
-            className="bg-gray-200 text-gray-800 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-300 transition-colors"
-          >
-            Disconnect
-          </button>
-        </div>
-      ) : (
-        <button
-          onClick={connectWallet}
-          className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors"
-        >
-          Connect Wallet
-        </button>
-      )}
-    </div>
-  );
-};
+// Wallet Connect Button Component - Will be moved to WalletComponents.js
+const WalletButton = dynamic(() => import('./WalletComponents.js').then(mod => mod.WalletButton), {
+  ssr: false
+});
 
 // Sample data for marketplace
 const projectCategories = [
@@ -409,9 +365,12 @@ const transactions = [
 export default function MarketplacePage() {
   const [heroVisible, setHeroVisible] = useState(false);
   const [activeCategory, setActiveCategory] = useState('all');
-  const [filteredProjects, setFilteredProjects] = useState(projectsData);
+  const [filteredProjects, setFilteredProjects] = useState([]);  // Initialize as empty
 
   useEffect(() => {
+    // Initialize projects state on client side
+    setFilteredProjects(projectsData);
+    
     // Slight delay before starting the animation sequence
     const timer = setTimeout(() => {
       setHeroVisible(true);
