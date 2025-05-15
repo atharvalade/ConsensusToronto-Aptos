@@ -9,7 +9,17 @@ import dynamic from 'next/dynamic';
 // Dynamically import wallet components with SSR disabled
 const WalletComponents = dynamic(
   () => import('./WalletComponents.js').then((mod) => mod.default),
-  { ssr: false }
+  { 
+    ssr: false,
+    loading: () => (
+      <button 
+        disabled
+        className="bg-gray-400 text-white px-4 py-2 rounded-lg font-medium transition-colors flex items-center"
+      >
+        Loading...
+      </button>
+    )
+  }
 );
 
 // Components for marketplace
@@ -21,6 +31,7 @@ const ProjectCard = ({ project }) => {
   
   // We'll pass these functions to the WalletComponents
   const startPurchase = () => {
+    setError(null); // Clear any previous errors
     setPurchasing(true);
   };
   
@@ -32,7 +43,12 @@ const ProjectCard = ({ project }) => {
   
   const handlePurchaseError = (err) => {
     console.error("Transaction error:", err);
-    setError(err.message || "Transaction failed. Please try again.");
+    // Handle both error objects and strings
+    if (typeof err === 'object' && err !== null) {
+      setError(err.message || "Transaction failed. Please try again.");
+    } else {
+      setError(err || "Transaction failed. Please try again.");
+    }
     setPurchasing(false);
   };
 
@@ -112,6 +128,13 @@ const ProjectCard = ({ project }) => {
             onError={handlePurchaseError}
           />
         </div>
+        
+        {/* Error message display */}
+        {error && (
+          <div className="mt-3 p-2 bg-red-50 border border-red-200 rounded-md text-red-600 text-sm">
+            {error}
+          </div>
+        )}
       </div>
 
       {/* Success Modal */}
@@ -181,9 +204,20 @@ const ProjectFilter = ({ categories, activeCategory, setActiveCategory }) => {
 };
 
 // Wallet Connect Button Component - Will be moved to WalletComponents.js
-const WalletButton = dynamic(() => import('./WalletComponents.js').then(mod => mod.WalletButton), {
-  ssr: false
-});
+const WalletButton = dynamic(
+  () => import('./WalletComponents.js').then(mod => mod.WalletButton),
+  {
+    ssr: false,
+    loading: () => (
+      <button
+        disabled
+        className="bg-gray-400 text-white px-4 py-2 rounded-lg text-sm font-medium"
+      >
+        Loading Wallet...
+      </button>
+    ) 
+  }
+);
 
 // Sample data for marketplace
 const projectCategories = [

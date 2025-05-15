@@ -1,5 +1,6 @@
 import { Inter, Montserrat } from 'next/font/google';
 import './globals.css';
+import ClientWalletProvider from './ClientWalletProvider';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -23,8 +24,10 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${inter.variable} ${montserrat.variable}`}>
       {/* The default font families from globals.css will apply */}
-      <body>
-        {children}
+      <body suppressHydrationWarning={true}>
+        <ClientWalletProvider>
+          {children}
+        </ClientWalletProvider>
       </body>
     </html>
   );

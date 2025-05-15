@@ -1,16 +1,29 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useWallet, AptosWalletAdapterProvider } from '@aptos-labs/wallet-adapter-react';
-import { PetraWallet } from 'petra-plugin-wallet-adapter';
+import { useWallet } from '@aptos-labs/wallet-adapter-react';
 
 // Purchase button component with wallet functionality
 function PurchaseButton({ project, purchasing, onStartPurchase, onCompletePurchase, onError }) {
   const { connected, wallet, account } = useWallet();
   const contractAddress = "0xda14cb8535c599bd7eeedaf980c4e6fa8c1605047ff88403b6120f7437b7b6c0";
   
+  useEffect(() => {
+    console.log("PurchaseButton mounted with wallet state:", {
+      connected,
+      wallet: wallet ? { name: wallet.name } : null,
+      account: account ? { address: account.address } : null
+    });
+  }, [connected, wallet, account]);
+  
   const handlePurchase = async () => {
+    console.log("Purchase clicked with wallet state:", {
+      connected,
+      wallet: wallet ? { name: wallet.name } : null
+    });
+    
     if (!connected || !wallet) {
+      console.log("Not connected to wallet, showing error");
       onError("Please connect your wallet first");
       return;
     }
@@ -40,7 +53,7 @@ function PurchaseButton({ project, purchasing, onStartPurchase, onCompletePurcha
         // First try the standard method
         pendingTransaction = await wallet.signAndSubmitTransaction(payload);
       } catch (e) {
-        console.log("Standard transaction submission failed, trying alternative method");
+        console.log("Standard transaction submission failed, trying alternative method:", e);
         // Some wallets might expect a different format
         pendingTransaction = await wallet.signAndSubmitTransaction({
           payload: payload
@@ -95,6 +108,14 @@ function PurchaseButton({ project, purchasing, onStartPurchase, onCompletePurcha
 function WalletConnectButton() {
   const { connected, wallet, account, connect, disconnect, wallets } = useWallet();
   
+  useEffect(() => {
+    console.log("WalletConnectButton mounted with wallet state:", {
+      connected,
+      wallets: wallets.map(w => w.name),
+      account: account ? 'present' : 'not present'
+    });
+  }, [connected, wallet, account, wallets]);
+  
   // Format address to show a shortened version
   const formatAddress = (address) => {
     if (!address) return '';
@@ -116,12 +137,14 @@ function WalletConnectButton() {
   
   const connectWallet = async () => {
     try {
+      console.log("Connecting wallet, available wallets:", wallets.map(w => w.name));
       // Specifically target Petra wallet if available
       const petraWallet = wallets.find(w => w.name === "Petra");
       if (petraWallet) {
+        console.log("Found Petra wallet, connecting specifically to it");
         await connect(petraWallet.name);
       } else {
-        // Fall back to any available wallet
+        console.log("No specific wallet selected, connecting to first available");
         await connect();
       }
     } catch (error) {
@@ -163,20 +186,12 @@ function WalletConnectButton() {
   );
 }
 
-// Exported WalletButton with provider
+// Export the components directly - no need for provider wrappers since we use the shared provider
 export function WalletButton() {
-  return (
-    <AptosWalletAdapterProvider plugins={[new PetraWallet()]} autoConnect={false}>
-      <WalletConnectButton />
-    </AptosWalletAdapterProvider>
-  );
+  return <WalletConnectButton />;
 }
 
-// Main component that wraps everything with AptosWalletAdapterProvider
+// Main component
 export default function WalletComponents(props) {
-  return (
-    <AptosWalletAdapterProvider plugins={[new PetraWallet()]} autoConnect={false}>
-      <PurchaseButton {...props} />
-    </AptosWalletAdapterProvider>
-  );
+  return <PurchaseButton {...props} />;
 } 
