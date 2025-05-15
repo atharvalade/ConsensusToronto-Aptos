@@ -24,7 +24,7 @@ echo "Updated Move.toml with address: $ADDR"
 
 # Compile the contract
 echo "Compiling Move contracts..."
-aptos move compile
+aptos move compile --skip-fetch-latest-git-deps
 if [ $? -ne 0 ]; then
     echo "Error: Compilation failed."
     exit 1
@@ -33,7 +33,7 @@ echo "Compilation successful."
 
 # Publish the contract
 echo "Publishing contracts to Aptos testnet..."
-aptos move publish --named-addresses ecochain=$ADDR --max-gas=10000
+aptos move publish --named-addresses ecochain=$ADDR --max-gas=10000 --skip-fetch-latest-git-deps
 if [ $? -ne 0 ]; then
     echo "Error: Publishing failed."
     exit 1
