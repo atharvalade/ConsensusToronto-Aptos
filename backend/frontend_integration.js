@@ -46,8 +46,8 @@ function AptosDemoComponent() {
     signAndSubmitTransaction 
   } = useWallet();
   
-  // Contract address - replace with your deployed contract address
-  const MODULE_ADDRESS = "YOUR_CONTRACT_ADDRESS";
+  // Contract address - using the Petra wallet address
+  const MODULE_ADDRESS = "0xda14cb8535c599bd7eeedaf980c4e6fa8c1605047ff88403b6120f7437b7b6c0";
   
   // Connect wallet
   const handleConnectWallet = async () => {
@@ -230,7 +230,7 @@ function getVerifiedProjects() {
   // This would typically be a hook that fetches data from your API or directly from the blockchain
   const [projects, setProjects] = useState([]);
   const { connected, wallet } = useWallet();
-  const MODULE_ADDRESS = "YOUR_CONTRACT_ADDRESS";
+  const MODULE_ADDRESS = "0xda14cb8535c599bd7eeedaf980c4e6fa8c1605047ff88403b6120f7437b7b6c0";
   
   useEffect(() => {
     // If we're connected to a wallet, fetch verified projects
@@ -289,5 +289,5 @@ export default function handler(req, res) {
 // Add this to your .env.local file:
 /*
 NEXT_PUBLIC_APTOS_NODE_URL=https://fullnode.testnet.aptoslabs.com/v1
-NEXT_PUBLIC_CONTRACT_ADDRESS=YOUR_CONTRACT_ADDRESS
+NEXT_PUBLIC_CONTRACT_ADDRESS=0xda14cb8535c599bd7eeedaf980c4e6fa8c1605047ff88403b6120f7437b7b6c0
 */ 

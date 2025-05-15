@@ -17,8 +17,9 @@ const projectData = JSON.parse(fs.readFileSync(path.join(__dirname, 'project_dat
  * Generate a command to initialize the marketplace
  */
 function generateMarketplaceInitCommand() {
+  const contractAddress = "0xda14cb8535c599bd7eeedaf980c4e6fa8c1605047ff88403b6120f7437b7b6c0";
   return `aptos move run \\
-  --function-id YOUR_ADDRESS::marketplace::initialize \\
+  --function-id ${contractAddress}::marketplace::initialize \\
   --max-gas=5000`;
 }
 
@@ -29,9 +30,10 @@ function generateCreateProjectCommand(project) {
   // Convert price from cents to the price format used in the contract
   const price = project.price;
   const creditsAvailable = project.creditsAvailable;
+  const contractAddress = "0xda14cb8535c599bd7eeedaf980c4e6fa8c1605047ff88403b6120f7437b7b6c0";
   
   return `aptos move run \\
-  --function-id YOUR_ADDRESS::verification::create_project \\
+  --function-id ${contractAddress}::verification::create_project \\
   --args string:"${project.id}" string:"${project.title}" string:"${project.location}" \\
   string:"${project.description}" \\
   string:"${project.category}" u64:${creditsAvailable} u64:${price} \\

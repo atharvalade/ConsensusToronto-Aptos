@@ -14,20 +14,12 @@ fi
 # Set working directory
 cd "$(dirname "$0")/move"
 
-# Check if address is provided
-if [ -z "$1" ]
-then
-    echo "Error: No address provided."
-    echo "Usage: ./aptos_deploy.sh <your-address>"
-    exit 1
-fi
-
-# Set address
-ADDR=$1
+# Set address (using Petra wallet address)
+ADDR="0xda14cb8535c599bd7eeedaf980c4e6fa8c1605047ff88403b6120f7437b7b6c0"
 echo "Using address: $ADDR"
 
 # Update the Move.toml file with the provided address
-sed -i '' "s/ecochain = \"0x1\"/ecochain = \"$ADDR\"/" Move.toml
+sed -i '' "s/ecochain = \".*\"/ecochain = \"$ADDR\"/" Move.toml
 echo "Updated Move.toml with address: $ADDR"
 
 # Compile the contract

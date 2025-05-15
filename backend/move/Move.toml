@@ -4,7 +4,7 @@ version = "0.1.0"
 authors = ["EcoChain"]
 
 [addresses]
-ecochain = "0x1"
+ecochain = "0xda14cb8535c599bd7eeedaf980c4e6fa8c1605047ff88403b6120f7437b7b6c0"
 
 [dependencies]
 AptosFramework = { git = "https://github.com/aptos-labs/aptos-core.git", subdir = "aptos-move/framework/aptos-framework", rev = "main" } 

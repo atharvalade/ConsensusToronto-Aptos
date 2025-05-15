@@ -188,10 +188,11 @@ function generateAptosCommand(project, sensorData) {
   const soilCarbonContent = sensorData.readings.soil_carbon_content || 500;
   const biomassAccumulation = sensorData.readings.biomass_accumulation || 2000;
   
-  // Format the command
-  // Note: YOUR_ADDRESS should be replaced with the actual address when running
+  // Format the command with the Petra wallet address
+  const contractAddress = "0xda14cb8535c599bd7eeedaf980c4e6fa8c1605047ff88403b6120f7437b7b6c0";
+  
   return `aptos move run \\
-  --function-id YOUR_ADDRESS::verification::submit_sensor_data \\
+  --function-id ${contractAddress}::verification::submit_sensor_data \\
   --args string:"${project.id}" string:"${sensorData.latitude}" string:"${sensorData.longitude}" \\
   u64:${co2Value} u64:${treeGrowthRate} u64:${soilCarbonContent} u64:${biomassAccumulation} \\
   hex:"${sensorData.data_hash}" \\
