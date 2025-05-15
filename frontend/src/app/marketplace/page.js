@@ -13,8 +13,14 @@ const ProjectCard = ({ project }) => {
       whileHover={{ y: -5 }}
       transition={{ duration: 0.3 }}
     >
-      <div className="h-48 bg-gradient-to-r from-green-400 to-blue-500 flex items-center justify-center text-white text-6xl">
-        {project.image}
+      <div className="h-48 bg-gray-200 relative overflow-hidden">
+        <Image 
+          src={project.image} 
+          alt={project.title}
+          fill={true}
+          style={{ objectFit: "cover" }}
+          sizes="(max-width: 768px) 100vw, 33vw"
+        />
       </div>
       
       <div className="p-6">
@@ -78,12 +84,12 @@ const ProjectFilter = ({ categories, activeCategory, setActiveCategory }) => {
         {categories.map((category) => (
           <button 
             key={category.id}
-            className={`w-full text-left px-3 py-2 rounded-md transition-colors ${activeCategory === category.id ? 'bg-green-100 text-green-800' : 'hover:bg-gray-100'}`}
+            className={`w-full text-left px-3 py-2 rounded-md transition-colors ${activeCategory === category.id ? 'bg-green-100 text-green-800' : 'text-gray-700 hover:bg-gray-100'}`}
             onClick={() => setActiveCategory(category.id)}
           >
             <div className="flex items-center">
               <span className="text-lg mr-2">{category.icon}</span>
-              <span>{category.name}</span>
+              <span className="font-medium">{category.name}</span>
             </div>
           </button>
         ))}
@@ -107,7 +113,7 @@ const projectsData = [
     id: "RF-2023-089",
     title: "Amazon Rainforest Conservation",
     location: "Brazil",
-    image: "🌴",
+    image: "https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&h=300&q=80",
     type: "Reforestation",
     price: "$18.45",
     creditsAvailable: "12,450",
@@ -121,7 +127,7 @@ const projectsData = [
     id: "SE-2023-142",
     title: "Solar Energy Farm",
     location: "India",
-    image: "☀️",
+    image: "https://images.unsplash.com/photo-1509391366360-2e959784a276?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&h=300&q=80",
     type: "Renewable Energy",
     price: "$14.20",
     creditsAvailable: "45,230",
@@ -135,7 +141,7 @@ const projectsData = [
     id: "MG-2023-076",
     title: "Methane Gas Capture",
     location: "United States",
-    image: "♨️",
+    image: "/images/methane-capture.jpg",
     type: "Gas Capture",
     price: "$12.80",
     creditsAvailable: "9,120",
@@ -149,7 +155,7 @@ const projectsData = [
     id: "MC-2023-105",
     title: "Marine Conservation Blue Carbon",
     location: "Philippines",
-    image: "🌊",
+    image: "https://images.unsplash.com/photo-1582967788606-a171c1080cb0?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&h=300&q=80",
     type: "Conservation",
     price: "$19.50",
     creditsAvailable: "7,850",
@@ -163,7 +169,7 @@ const projectsData = [
     id: "RF-2023-118",
     title: "Highland Reforestation Project",
     location: "Scotland",
-    image: "🌲",
+    image: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&h=300&q=80",
     type: "Reforestation",
     price: "$16.50",
     creditsAvailable: "15,200",
@@ -177,7 +183,7 @@ const projectsData = [
     id: "WE-2023-092",
     title: "Wind Farm Kenya",
     location: "Kenya",
-    image: "🌬️",
+    image: "https://images.unsplash.com/photo-1527847263472-aa5338d178b8?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&h=300&q=80",
     type: "Renewable Energy",
     price: "$13.70",
     creditsAvailable: "32,600",
@@ -502,7 +508,7 @@ export default function MarketplacePage() {
                   
                   <div className="flex items-center space-x-2">
                     <span className="text-sm text-gray-700">Sort by:</span>
-                    <select className="border rounded-md px-2 py-1 text-sm">
+                    <select className="border rounded-md px-2 py-1 text-sm text-gray-800 bg-white">
                       <option>Price (Low to High)</option>
                       <option>Price (High to Low)</option>
                       <option>Rating</option>
