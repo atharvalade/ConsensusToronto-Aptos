@@ -1,0 +1,25 @@
+@import "tailwindcss";
+
+body {
+  margin: 0;
+  font-family: var(--font-montserrat), -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #000; /* Default background for areas not covered by video */
+  color: white; /* Default text color */
+  letter-spacing: 0.015em;
+  line-height: 1.5;
+}
+
+html, body, #__next {
+  height: 100%; /* Ensure full height for layout */
+  overflow-x: hidden; /* Prevent horizontal scrollbar caused by full-width video */
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-montserrat);
+  font-weight: 300;
+  line-height: 1.2;
+}
