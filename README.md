@@ -69,30 +69,6 @@ EcoChain implements a sustainable business model through:
 4. **Q2 2024**: Develop mobile application for consumer-facing carbon offsetting
 5. **Q3 2024**: Launch enterprise dashboard for corporate carbon management
 
-## Demo and Testing Instructions
-
-Our project is deployed on the Aptos Testnet. You can interact with it using the following steps:
-
-1. Visit our [demo site](https://ecochain-demo.vercel.app)
-2. Connect your Aptos wallet (Petra, Martian, or Pontem)
-3. Browse available carbon credits from verified projects
-4. Purchase or retire carbon credits to offset your carbon footprint
-
-For testing with testnet tokens:
-- Contract Address: `0x12345...` (replace with actual address)
-- Test Project ID: `RF-2023-089`
-
-## Team
-
-- Jane Smith - Blockchain Developer
-- John Doe - Frontend Developer
-- Alice Johnson - IoT Specialist
-- Bob Williams - Climate Scientist
-
 ## Conclusion
 
 EcoChain represents a significant leap forward in making carbon offsetting more transparent, accessible, and effective. By combining the power of Aptos blockchain with IoT verification and a user-friendly interface, we're creating a solution that can meaningfully contribute to global climate goals while providing a sustainable business model.
-
-## Contact
-
-For more information, please contact us at team@ecochain.xyz or visit our [website](https://ecochain.xyz). 
