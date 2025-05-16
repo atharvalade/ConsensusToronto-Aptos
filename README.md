@@ -4,7 +4,7 @@
 
 EcoChain is a decentralized platform built on the Aptos blockchain designed to tokenize, verify, and trade carbon credits. The platform enables companies, individuals, and organizations to offset their carbon emissions in a transparent, scalable, and efficient manner. Using IoT sensors, real-time metadata, and third-party audits, EcoChain ensures that every carbon offset project is authentic, traceable, and meets global standards.
 
-![EcoChain Banner](assets/banner.png)
+Video: https://youtu.be/AMaahakQtb0
 
 ## The Problem
 
