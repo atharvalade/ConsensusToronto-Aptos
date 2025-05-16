@@ -6,7 +6,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 
-// Dynamically import wallet components with SSR disabled
+// Dynamically import wallet components with SSR disabled and loading fallbacks
 const WalletComponents = dynamic(
   () => import('./WalletComponents.js').then((mod) => mod.default),
   { 
@@ -16,6 +16,10 @@ const WalletComponents = dynamic(
         disabled
         className="bg-gray-400 text-white px-4 py-2 rounded-lg font-medium transition-colors flex items-center"
       >
+        <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
         Loading...
       </button>
     )
@@ -44,11 +48,22 @@ const ProjectCard = ({ project }) => {
   const handlePurchaseError = (err) => {
     console.error("Transaction error:", err);
     // Handle both error objects and strings
+    let errorMessage;
     if (typeof err === 'object' && err !== null) {
-      setError(err.message || "Transaction failed. Please try again.");
+      // Try to extract a better error message from nested error objects
+      errorMessage = err.message || "Transaction failed. Please try again.";
+      
+      // Handle specific error cases
+      if (errorMessage.includes("User rejected the request")) {
+        errorMessage = "Transaction was cancelled. Please try again if you wish to purchase.";
+      } else if (errorMessage.includes("insufficient balance")) {
+        errorMessage = "You don't have enough APT to complete this transaction.";
+      }
     } else {
-      setError(err || "Transaction failed. Please try again.");
+      errorMessage = err || "Transaction failed. Please try again.";
     }
+    
+    setError(errorMessage);
     setPurchasing(false);
   };
 
@@ -203,7 +218,7 @@ const ProjectFilter = ({ categories, activeCategory, setActiveCategory }) => {
   );
 };
 
-// Wallet Connect Button Component - Will be moved to WalletComponents.js
+// Wallet Connect Button Component
 const WalletButton = dynamic(
   () => import('./WalletComponents.js').then(mod => mod.WalletButton),
   {
@@ -213,6 +228,10 @@ const WalletButton = dynamic(
         disabled
         className="bg-gray-400 text-white px-4 py-2 rounded-lg text-sm font-medium"
       >
+        <svg className="animate-spin inline-block mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
         Loading Wallet...
       </button>
     ) 

@@ -45,36 +45,108 @@ function PurchaseButton({ project, purchasing, onStartPurchase, onCompletePurcha
         ]
       };
 
+      // Format specifically for Petra wallet if needed
+      const petraPayload = {
+        function: `${contractAddress}::marketplace::purchase_credits`,
+        type_arguments: [],
+        arguments: [
+          project.id, 
+          "1", // Just 1 credit for demo
+          project.pricePerTokenUSD ? project.pricePerTokenUSD.toString() : "1845" // Use price if available
+        ]
+      };
+
       console.log("Submitting transaction with payload:", payload);
 
-      // Different wallets might have different API signatures
+      // Check if the Petra wallet is directly available in window
+      const directPetraAvailable = typeof window !== 'undefined' && window.petra;
+      
+      // Try to submit the transaction with better error handling
       let pendingTransaction;
+      let txHash;
+      
       try {
-        // First try the standard method
-        pendingTransaction = await wallet.signAndSubmitTransaction(payload);
+        // First try direct Petra integration if available (since we know it's Petra wallet extension)
+        if (directPetraAvailable) {
+          console.log("Trying direct Petra wallet integration");
+          try {
+            const response = await window.petra.signAndSubmitTransaction(petraPayload);
+            console.log("Direct Petra transaction successful:", response);
+            txHash = response?.hash || response;
+          } catch (petraError) {
+            console.error("Direct Petra integration failed:", petraError);
+            throw petraError; // Re-throw to try adapter approach
+          }
+        } 
+        // Otherwise try the adapter method
+        else if (wallet.signAndSubmitTransaction) {
+          console.log("Direct Petra not available, trying wallet adapter transaction submission");
+          pendingTransaction = await wallet.signAndSubmitTransaction(petraPayload);
+          console.log("Wallet adapter transaction successful:", pendingTransaction);
+          txHash = pendingTransaction?.hash || pendingTransaction?.txHash;
+        } else {
+          throw new Error("No transaction method available");
+        }
       } catch (e) {
-        console.log("Standard transaction submission failed, trying alternative method:", e);
-        // Some wallets might expect a different format
-        pendingTransaction = await wallet.signAndSubmitTransaction({
-          payload: payload
-        });
-      }
-      
-      console.log("Transaction submitted:", pendingTransaction);
-      
-      // Wait for transaction confirmation if the wallet provides an aptosClient
-      if (wallet.aptosClient) {
+        console.error("First transaction attempt failed:", e);
+        
+        // Try alternative payload format as fallback
         try {
-          console.log("Waiting for transaction confirmation...");
-          await wallet.aptosClient.waitForTransaction(pendingTransaction.hash);
-          console.log("Transaction confirmed!");
-        } catch (waitError) {
-          console.warn("Could not wait for transaction, but it was submitted:", waitError);
-          // We continue anyway as the transaction was submitted
+          if (directPetraAvailable) {
+            console.log("Trying direct Petra with alternative payload format");
+            // Try with different payload formats for Petra
+            // Format 1: Simple payload without type
+            const response = await window.petra.signAndSubmitTransaction({
+              function: `${contractAddress}::marketplace::purchase_credits`,
+              type_arguments: [],
+              arguments: [
+                project.id, 
+                "1", 
+                project.pricePerTokenUSD ? project.pricePerTokenUSD.toString() : "1845"
+              ]
+            });
+            console.log("Alternative format successful:", response);
+            txHash = response?.hash || response;
+          } else if (wallet.signAndSubmitTransaction) {
+            console.log("Trying wallet adapter with standard payload");
+            pendingTransaction = await wallet.signAndSubmitTransaction(payload);
+            console.log("Standard payload successful:", pendingTransaction);
+            txHash = pendingTransaction?.hash || pendingTransaction?.txHash;
+          } else {
+            throw new Error("No fallback transaction method available");
+          }
+        } catch (fallbackError) {
+          console.error("All transaction attempts failed:", fallbackError);
+          throw new Error(`Transaction failed: ${fallbackError.message}`);
         }
       }
+
+      console.log("Transaction submitted, hash:", txHash);
       
-      onCompletePurchase(pendingTransaction.hash || pendingTransaction.txHash || pendingTransaction);
+      if (!txHash) {
+        console.warn("No transaction hash found in response");
+        onError("Transaction was submitted but no transaction hash was returned");
+        return;
+      }
+      
+      // Try to wait for confirmation if possible
+      try {
+        if (wallet.aptosClient && typeof wallet.aptosClient.waitForTransaction === 'function') {
+          console.log("Waiting for transaction confirmation via wallet adapter");
+          await wallet.aptosClient.waitForTransaction(txHash);
+        } else if (directPetraAvailable && window.petra.aptosClient) {
+          console.log("Waiting for transaction confirmation via direct Petra integration");
+          await window.petra.aptosClient.waitForTransaction(txHash);
+        } else {
+          console.log("No client available to wait for confirmation");
+        }
+        console.log("Transaction confirmed!");
+      } catch (waitError) {
+        console.warn("Could not wait for transaction, but it was submitted:", waitError);
+        // We continue anyway as the transaction was submitted
+      }
+      
+      onCompletePurchase(txHash);
     } catch (err) {
       console.error("Transaction error:", err);
       onError(err);
